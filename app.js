@@ -4,7 +4,32 @@ const yargs = require("yargs");
 
 const notes = require("./notes.js");
 
-const argv = yargs.argv;
+var titleOptions = {
+  describe: "Title of note",
+  demand: true,
+  alias: "t"
+};
+
+var bodyOptions = {
+  describe: "Body of note",
+  demand: true,
+  alias: "b"
+};
+
+const argv = yargs
+  .command("add", "add a new note", {
+    title: titleOptions,
+    body: bodyOptions
+  })
+  .command("list", "list all notes")
+  .command("read", "list all notes", {
+    title: titleOptions
+  })
+  .command("remove", "Remove a note", {
+    title: titleOptions
+  })
+  .help().argv;
+
 var command = argv._[0];
 
 if (command === "add") {
@@ -18,7 +43,7 @@ if (command === "add") {
   }
 } else if (command === "list") {
   var allNotes = notes.getAll();
-  console.log(`Printin ${allNotes.length} note(s)`);
+  console.log(`Printing ${allNotes.length} note(s)`);
 
   allNotes.forEach(note => notes.logNote(note));
 } else if (command === "read") {
